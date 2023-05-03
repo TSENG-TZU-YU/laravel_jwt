@@ -35,7 +35,7 @@ class AuthController extends Controller
         }
 
         $user = Auth::user();
-
+        // return $this->respondWithToken($token);
         return response()->json([
             'status' => 'success',
             'user' => $user,
@@ -104,6 +104,15 @@ class AuthController extends Controller
                 'token' => Auth::refresh(),
                 'type' => 'bearer',
             ]
+        ]);
+    }
+
+    protected function respondWithToken($token)
+    {
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => auth()->factory()->getTTL() * 60
         ]);
     }
 }
